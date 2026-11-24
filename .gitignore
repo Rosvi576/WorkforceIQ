@@ -1,0 +1,51 @@
+# Python environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node dependencies
+node_modules/
+
+# Frontend build
+dashboard/dist/
+dashboard/.vite/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Generated datasets
+dataset/processed/
+
+# Raw dataset
+dataset/*.csv
+
+# Temporary files
+*.log
+*.tmp
+
+# Duplicate project directory
+/Employee-Attrition-Prediction/
