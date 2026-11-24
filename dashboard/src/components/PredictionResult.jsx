@@ -1,4 +1,3 @@
-
 import {
   BrainCircuit,
   Info,
@@ -6,6 +5,10 @@ import {
   AlertTriangle,
   Activity
 } from "lucide-react";
+
+function formatPercent(value, decimals = 2) {
+  return `${(value * 100).toFixed(decimals)}%`;
+}
 
 function ScoreGauge({ score, threshold, flagged }) {
 
@@ -37,7 +40,7 @@ function ScoreGauge({ score, threshold, flagged }) {
       <svg
         viewBox="0 0 260 165"
         role="img"
-        aria-label={`Model score ${score.toFixed(4)}, threshold ${threshold}`}
+        aria-label={`Attrition risk score ${formatPercent(score)}, decision threshold ${formatPercent(threshold, 0)}`}
       >
 
         <path
@@ -73,9 +76,9 @@ function ScoreGauge({ score, threshold, flagged }) {
           textAnchor="middle"
           fontSize="32"
           fontWeight="700"
-          fill="#493327"
+          fill={scoreColor}
         >
-          {score.toFixed(4)}
+          {formatPercent(score)}
         </text>
 
         <text
@@ -85,7 +88,7 @@ function ScoreGauge({ score, threshold, flagged }) {
           fontSize="12"
           fill="#856B59"
         >
-          Attrition model score
+          Attrition risk score
         </text>
 
         <text
@@ -95,7 +98,7 @@ function ScoreGauge({ score, threshold, flagged }) {
           fontSize="11"
           fill="#856B59"
         >
-          0.0
+          0%
         </text>
 
         <text
@@ -105,13 +108,13 @@ function ScoreGauge({ score, threshold, flagged }) {
           fontSize="11"
           fill="#856B59"
         >
-          1.0
+          100%
         </text>
 
       </svg>
 
       <p className="gauge-caption">
-        Decision threshold: {threshold.toFixed(2)}
+        Decision threshold: {formatPercent(threshold, 0)}
       </p>
 
     </div>
@@ -137,7 +140,7 @@ export default function PredictionResult({ response }) {
           <p>
             Complete the employee information form
             and generate a prediction to view
-            the machine learning result.
+            the attrition risk score.
           </p>
 
         </div>
@@ -199,7 +202,9 @@ export default function PredictionResult({ response }) {
         <ResultIcon size={22} />
 
         <strong>
-          {result.classification}
+          {flagged
+            ? "High Risk — Flagged for Review"
+            : "Below Risk Threshold"}
         </strong>
 
       </div>
@@ -212,41 +217,42 @@ export default function PredictionResult({ response }) {
         </div>
 
         <div>
-          <span>Model score</span>
-          <strong>{score.toFixed(4)}</strong>
+          <span>Attrition risk score</span>
+          <strong>{formatPercent(score)}</strong>
         </div>
 
         <div>
           <span>Decision threshold</span>
-          <strong>{threshold.toFixed(2)}</strong>
+          <strong>{formatPercent(threshold, 0)}</strong>
         </div>
 
         <div>
-          <span>Predicted class</span>
-          <strong>{result.prediction}</strong>
+          <span>Risk assessment</span>
+          <strong>
+            {flagged ? "Above Threshold" : "Below Threshold"}
+          </strong>
         </div>
 
       </div>
 
       <div className="prediction-interpretation">
 
-        <h4>Result Interpretation</h4>
+        <h4>What Does This Mean?</h4>
 
         <p>
-
           {flagged
 
-            ? `The model score meets or exceeds the ${threshold.toFixed(2)} decision threshold. The model assigns this sample to the positive attrition class.`
+            ? `This employee profile has an attrition risk score of ${formatPercent(score)}, meeting or exceeding the model's ${formatPercent(threshold, 0)} risk threshold. The profile is flagged for further review.`
 
-            : `The model score is below the ${threshold.toFixed(2)} decision threshold. The model assigns this sample to the negative attrition class.`
+            : `This employee profile has an attrition risk score of ${formatPercent(score)}, which is below the model's ${formatPercent(threshold, 0)} risk threshold. The profile is not flagged for review.`
 
           }
-
         </p>
 
         <p>
-          This classification does not establish
-          whether an employee will actually resign.
+          A higher score indicates stronger patterns
+          associated with attrition in the training data.
+          It does not guarantee that an employee will resign.
         </p>
 
       </div>
@@ -260,14 +266,15 @@ export default function PredictionResult({ response }) {
           <strong>Important limitation</strong>
 
           <p>
-            {response.disclaimer ||
-              "Educational prototype. The model score is not a calibrated probability of resignation."}
+            The displayed percentage represents a model
+            risk score, not the actual probability that
+            an employee will leave the organisation.
           </p>
 
           <p>
-            Do not use this output for hiring,
-            termination, promotion, compensation
-            or other employment decisions.
+            This educational prototype must not be used
+            for hiring, termination, promotion,
+            compensation or other employment decisions.
           </p>
 
         </div>
