@@ -1,4 +1,15 @@
 
+
+## Live Application
+
+- Frontend: https://workforceiq-rosvi.netlify.app
+- Backend: https://workforceiq-api-yi82.onrender.com
+- API Documentation: https://workforceiq-api-yi82.onrender.com/docs
+- GitHub: https://github.com/Rosvi576/WorkforceIQ
+
+The application is deployed using Netlify and Render.
+The free backend may take some time to wake up after inactivity.
+
 # WorkforceIQ
 
 ### Machine Learning-Based Employee Attrition Prediction and Workforce Analytics System
